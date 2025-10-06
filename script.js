@@ -3,6 +3,45 @@ const lista = document.getElementById("sugerencias");
 const listaAgregados = document.getElementById("lista"); // lista donde se agregan estudiantes
 const estudiantesAgregados = new Set(); // para guardar ids únicos
 
+// --- LOGIN ---
+let authUser = "";
+let authPass = "";
+
+// Recupera credenciales guardadas si existen
+if (localStorage.getItem("authUser") && localStorage.getItem("authPass")) {
+  authUser = localStorage.getItem("authUser");
+  authPass = localStorage.getItem("authPass");
+}
+
+function getAuthHeader() {
+  const usuario = localStorage.getItem("authUser") || "";
+  const password = localStorage.getItem("authPass") || "";
+  // Codifica usuario y contraseña en base64
+  const authValue = "Basic " + btoa(usuario + ":" + password);
+  console.log("Authorization header:", authValue);
+  if (!usuario || !password) return {};
+  return {
+    "Authorization": authValue
+  };
+}
+
+// --- MODIFICAR TODAS LAS PETICIONES FETCH PARA INCLUIR AUTH ---
+async function fetchWithAuth(url, options = {}) {
+  options.headers = {
+    ...(options.headers || {}),
+    ...getAuthHeader()
+  };
+  // Log para depuración
+  console.log("fetchWithAuth headers:", options.headers);
+  const response = await fetch(url, options);
+  if (response.status === 401) {
+    window.location = "login.html";
+    return Promise.reject("No autorizado");
+  }
+  return response;
+}
+
+// Ejemplo de búsqueda de estudiantes
 input.addEventListener("input", async () => {
   const query = input.value;
 
@@ -11,7 +50,7 @@ input.addEventListener("input", async () => {
     return;
   }
 
-  const response = await fetch(`http://localhost:8080/estudiantes/search?nombre=${query}`);
+  const response = await fetchWithAuth(`http://localhost:8080/estudiantes/search?nombre=${query}`);
   const resultados = await response.json();
 
   lista.innerHTML = resultados
@@ -67,7 +106,7 @@ async function obtenerDocentes() {
 
   // Si no hay datos o no son de hoy, consulta y guarda
   if (!docentes) {
-    const response = await fetch("http://localhost:8080/docentes");
+    const response = await fetchWithAuth("http://localhost:8080/docentes");
     docentes = await response.json();
     localStorage.setItem(docentesKey, JSON.stringify(docentes));
     localStorage.setItem(docentesFechaKey, hoy);
@@ -104,7 +143,7 @@ consultarBtn.addEventListener("click", async () => {
   const fecha = fechaInput.value;
   if (!fecha) return;
   try {
-    const response = await fetch(`http://localhost:8080/consultar/${fecha}`);
+    const response = await fetchWithAuth(`http://localhost:8080/consultar/${fecha}`);
     const data = await response.json();
 
     // Obtiene el día de la semana en texto mayúsculas (usando zona local)
@@ -177,10 +216,11 @@ registrarBtn.addEventListener("click", async () => {
 
   if (!confirm("¿Desea registrar estos estudiantes?")) return;
 
+
   try {
     let todosOk = true;
     for (const id of ids) {
-      const response = await fetch("http://localhost:8080/registrar", {
+      const response = await fetchWithAuth("http://localhost:8080/registrar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idEstudiante: Number(id) })
@@ -189,6 +229,7 @@ registrarBtn.addEventListener("click", async () => {
         todosOk = false;
       }
     }
+
     if (todosOk) {
       alert("Todos los estudiantes fueron registrados exitosamente.");
       listaAgregados.innerHTML = ""; // borra la lista
@@ -196,6 +237,7 @@ registrarBtn.addEventListener("click", async () => {
     } else {
       alert("Algunos estudiantes no se pudieron registrar.");
     }
+
   } catch (err) {
     console.error("Error registrando estudiantes:", err);
     alert("Ocurrió un error al registrar los estudiantes.");
