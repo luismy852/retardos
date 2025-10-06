@@ -50,7 +50,7 @@ input.addEventListener("input", async () => {
     return;
   }
 
-  const response = await fetchWithAuth(`http://localhost:8080/estudiantes/search?nombre=${query}`);
+  const response = await fetchWithAuth(`https://404-retardossanluis.wzrnw3.easypanel.host/estudiantes/search?nombre=${query}`);
   const resultados = await response.json();
 
   lista.innerHTML = resultados
@@ -106,7 +106,7 @@ async function obtenerDocentes() {
 
   // Si no hay datos o no son de hoy, consulta y guarda
   if (!docentes) {
-    const response = await fetchWithAuth("http://localhost:8080/docentes");
+    const response = await fetchWithAuth("https://404-retardossanluis.wzrnw3.easypanel.host/docentes");
     docentes = await response.json();
     localStorage.setItem(docentesKey, JSON.stringify(docentes));
     localStorage.setItem(docentesFechaKey, hoy);
@@ -143,7 +143,7 @@ consultarBtn.addEventListener("click", async () => {
   const fecha = fechaInput.value;
   if (!fecha) return;
   try {
-    const response = await fetchWithAuth(`http://localhost:8080/consultar/${fecha}`);
+    const response = await fetchWithAuth(`https://404-retardossanluis.wzrnw3.easypanel.host/consultar/${fecha}`);
     const data = await response.json();
 
     // Obtiene el día de la semana en texto mayúsculas (usando zona local)
@@ -220,7 +220,7 @@ registrarBtn.addEventListener("click", async () => {
   try {
     let todosOk = true;
     for (const id of ids) {
-      const response = await fetchWithAuth("http://localhost:8080/registrar", {
+      const response = await fetchWithAuth("https://404-retardossanluis.wzrnw3.easypanel.host/registrar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idEstudiante: Number(id) })
