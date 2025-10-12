@@ -3,17 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestor de retardos</title>
+    <link rel="stylesheet" href="style.css">    
 </head>
-<body>
+<body class="container">
+    <div class="logo-container">
+        <img class="logo2" src="logosan.png" alt="">
+    </div>
+    
+    <h1 class="titulo">Gestor de Retardos</h1>
+    <h2>🏫 Sistema de Control de Retardos - Colegio San Aurora</h2>
     <input type="text" id="buscador" placeholder="Buscar estudiante..." />
     <ul id="sugerencias"></ul>
-<h1>Lista</h1>
-    <ul id="lista"></ul>
+    <hr>
+    <h2>🧑‍🎓 Lista de estudiantes</h2>
+    <ul id="lista">
+        
+    </ul>
+    <hr>
 
-    <h2>Reportes</h2>
-    <h2>Fecha</h2>
+    <h2>📅 Reportes</h2>
     <ul id="Retardos"></ul>
+    <hr>
     <input type="date" id="fecha-consulta" />
     <button id="consultar-btn">Consultar por fecha</button>
     <div id="resultado-consulta"></div>

@@ -1,0 +1,59 @@
+#login-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container{
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 1px solid #ccc  ;
+
+}
+
+#buscador{
+    width: 100%;
+}
+
+.titulo{
+    text-align: center;
+}
+
+.logo{
+    width: 30%;
+    height: auto
+    margin-bottom: 20px;
+}
+
+
+
+.container-login{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.estudiante{
+    cursor: pointer;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo2{
+    width: 20%;
+    height: 20%;
+    margin-bottom: 20px;
+}
+
+.logo-container{
+    text-align: center;
+}

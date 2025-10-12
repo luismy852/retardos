@@ -55,7 +55,7 @@ input.addEventListener("input", async () => {
 
   lista.innerHTML = resultados
     .filter(est => est.idEstudiante !== undefined && est.idEstudiante !== null)
-    .map(est => `<li data-id="${est.idEstudiante}">${est.nombre}</li>`)
+    .map(est => `<li data-id="${est.idEstudiante}" class="estudiante">${est.nombre}</li>`)
     .join("");
 });
 
@@ -73,6 +73,7 @@ lista.addEventListener("click", (e) => {
       const li = document.createElement("li");
       li.textContent = nombre;
       li.setAttribute("data-id", id);
+      li.classList.add("estudiante-agregado");
       if (listaAgregados) {
         listaAgregados.appendChild(li);
         input.value = ""; // limpia el buscador
